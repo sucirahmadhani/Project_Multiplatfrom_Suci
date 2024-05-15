@@ -35,6 +35,69 @@ class _ListState extends State<List>{
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5),
               ),
+              color: Colors.green[300],
+              child: const Padding(
+                padding: EdgeInsets.all(10),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundImage: AssetImage('images/profil.jpg'),
+                    ),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Suci Rahmadhani',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              height: 1.5,
+                            ),
+                          ),
+                          Text(
+                            '2111522014',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
+                          ),
+                          Text(
+                            'Sistem Informasi',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )         
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            const Text(
+              'List Tugas Akhir',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 17,
+              ),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Card(
+              elevation: 3,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -76,7 +139,7 @@ class _ListState extends State<List>{
               ),
             ),
             const SizedBox(
-              height: 10,
+              height: 5,
             ),
             Card(
               elevation: 3,
