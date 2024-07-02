@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sidang/screen/login.dart';
-import 'package:sidang/screen/navbar.dart';
 import 'package:sidang/service/api.dart';
 import 'package:sidang/model/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -79,7 +78,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      drawer: const NavBar(),
       appBar: AppBar(
         title: const Text('Profile'),
         centerTitle: true,

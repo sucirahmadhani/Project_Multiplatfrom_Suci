@@ -75,9 +75,13 @@ class ApiService {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
-        return Thesis.fromJson(responseData['thesis']);
+        if (responseData.containsKey('thesis')) {
+          return Thesis.fromJson(responseData['thesis']);
+        } else {
+          throw Exception('Thesis data not found');
+        }
       } else {
-        throw Exception('Failed to load thesis detail');
+        throw Exception('Failed to load thesis detail: ${response.statusCode}');
       }
     } catch (e) {
       throw Exception('Exception occurred: $e');
@@ -133,7 +137,7 @@ class ApiService {
 
   Future<bool> registerDefense(String thesisId, Map<String, dynamic> data, String authToken) async {
     try {
-      final url = Uri.parse('$baseUrl/api/my-theses/$thesisId/defense');
+      final url = Uri.parse('$baseUrl/api/my-thesis/$thesisId/defenses');
       final response = await http.post(
         url,
         headers: {

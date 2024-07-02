@@ -11,7 +11,7 @@ class Detail extends StatefulWidget {
   final String authToken;
   final String thesisId;
 
-  const Detail({super.key, required this.thesisId, required this.authToken});
+  const Detail({Key? key, required this.thesisId, required this.authToken}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _DetailState();
@@ -64,142 +64,149 @@ class _DetailState extends State<Detail> {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
-            } else {
+            } else if (snapshot.hasData) {
               final thesis = snapshot.data!;
-              return Padding(
-                padding: const EdgeInsets.all(10),
-                child: ListView(
-                  children: [
-                    Card(
-                      elevation: 1,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              thesis.status == 1 ? 'Bimbingan' : 'Gagal',
+              return ListView(
+                children: [
+                  Card(
+                    elevation: 1,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            thesis.status == 1 ? 'Bimbingan' : 'Gagal',
+                            style: TextStyle(
+                              color: thesis.status == 1 ? Colors.green : Colors.red,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            thesis.title,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              height: 1.5,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.blue[200],
+                            ),
+                            child: Text(
+                              thesis.topicId ?? 'Unknown', 
                               style: TextStyle(
-                                color: thesis.status == 1 ? Colors.green : Colors.red,
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              thesis.title,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                height: 1.5,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Container(
-                              padding: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.blue[200],
-                              ),
-                              child: Text(
-                                thesis.topicId, 
-                                style: TextStyle(
-                                  color: Colors.blue[800],
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Dosen Pembimbing: ${thesis.supervisors.map((supervisor) => supervisor.lecturerId).join(', ')}',
-                              style: const TextStyle(
-                                color: Colors.black,
+                                color: Colors.blue[800],
                                 fontSize: 12,
                               ),
                             ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Tanggal Mulai: ${DateFormat('dd MMMM yyyy').format(thesis.startAt)}', 
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 12,
-                              ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Dosen Pembimbing: ${thesis.supervisors.map((supervisor) => supervisor.lecturerId).join(', ')}',
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 12,
                             ),
-                            const SizedBox(height: 16),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    if (thesis.seminars.isNotEmpty) {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => DetailSeminar(
-                                          authToken: widget.authToken,
-                                          thesisId: widget.thesisId,
-                                          seminarId: thesis.seminars.first.id,)), 
-                                      );
-                                    } else {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text('Error'),
-                                            content: const Text('Seminar belum terdaftar untuk tugas akhir ini.'),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                child: const Text('OK'),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    }
-                                  },
-                                  child: const Text('Detail Seminar'),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => DaftarSeminar(
-                                          thesisId: widget.thesisId,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: const Text('Daftar Seminar'),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => DaftarSidang(
-                                        thesisId: widget.thesisId,
-                                      )), 
-                                    );
-                                  },
-                                  child: const Text('Daftar Sidang'),
-                                ),
-                              ],
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Tanggal Mulai: ${DateFormat('dd MMMM yyyy').format(thesis.startAt ?? DateTime.now())}', 
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 12,
                             ),
-                          ],
-                        ),
+                          ),
+                          const SizedBox(height: 16),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  // Tombol-tombol di samping Card
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            if (thesis.seminars.isNotEmpty) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => DetailSeminar(
+                                  authToken: widget.authToken,
+                                  thesisId: widget.thesisId,
+                                  seminarId: thesis.seminars.first.id,
+                                )), 
+                              );
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Error'),
+                                    content: const Text('Seminar belum terdaftar untuk tugas akhir ini.'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: const Text('OK'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
+                          },
+                          child: const Text('Detail Seminar'),
+                        ),
+                        const SizedBox(width: 10),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DaftarSeminar(
+                                  thesisId: widget.thesisId,
+                                ),
+                              ),
+                            );
+                          },
+                          child: const Text('Daftar Seminar'),
+                        ),
+                        const SizedBox(width: 10),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => DaftarSidang(
+                                thesisId: widget.thesisId,
+                              )), 
+                            );
+                          },
+                          child: const Text('Daftar Sidang'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               );
+            } else {
+              return Center(child: Text('Data tidak tersedia'));
             }
           },
         ),
       ),
     );
   }
+
 }
