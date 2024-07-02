@@ -52,8 +52,8 @@ class _DaftarSidangState extends State<DaftarSidang> {
         'toefl': _toeflController.text,
         'ipk': _ipkController.text,
         'keyword': _keywordController.text,
-        'abstract': _abstractController.text,
-        'no_d_e': nilai,
+        'description': _abstractController.text,
+        'status': nilai,
       }, authToken);
 
       if (success) {

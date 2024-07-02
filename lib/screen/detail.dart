@@ -119,7 +119,7 @@ class _DetailState extends State<Detail> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Tanggal Mulai: ${DateFormat('dd MMMM yyyy').format(thesis.startAt ?? DateTime.now())}', 
+                            'Tanggal Mulai: ${DateFormat('dd MMMM yyyy').format(thesis.startAt)}', 
                             style: const TextStyle(
                               color: Colors.black,
                               fontSize: 12,
@@ -201,7 +201,7 @@ class _DetailState extends State<Detail> {
                 ],
               );
             } else {
-              return Center(child: Text('Data tidak tersedia'));
+              return const Center(child: Text('Data tidak tersedia'));
             }
           },
         ),
