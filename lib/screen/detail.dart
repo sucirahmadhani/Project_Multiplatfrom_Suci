@@ -130,70 +130,90 @@ class _DetailState extends State<Detail> {
                       ),
                     ),
                   ),
-                  // Tombol-tombol di samping Card
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            if (thesis.seminars.isNotEmpty) {
+                        PopupMenuButton<String>(
+                          onSelected: (value) {
+                            if (value == 'detail_seminar') {
+                              if (thesis.seminars.isNotEmpty) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => DetailSeminar(
+                                    authToken: widget.authToken,
+                                    thesisId: widget.thesisId,
+                                    seminarId: thesis.seminars.first.id,
+                                  )), 
+                                );
+                              } else {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('Error'),
+                                      content: const Text('Seminar belum terdaftar untuk tugas akhir ini.'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: const Text('OK'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
+                            } else if (value == 'daftar_seminar') {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => DetailSeminar(
-                                  authToken: widget.authToken,
-                                  thesisId: widget.thesisId,
-                                  seminarId: thesis.seminars.first.id,
-                                )), 
+                                MaterialPageRoute(
+                                  builder: (context) => DaftarSeminar(
+                                    thesisId: widget.thesisId,
+                                  ),
+                                ),
                               );
-                            } else {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text('Error'),
-                                    content: const Text('Seminar belum terdaftar untuk tugas akhir ini.'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        child: const Text('OK'),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                },
+                            } else if (value == 'daftar_sidang') {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => DaftarSidang(
+                                  thesisId: widget.thesisId,
+                                )), 
                               );
                             }
                           },
-                          child: const Text('Detail Seminar'),
-                        ),
-                        const SizedBox(width: 10),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DaftarSeminar(
-                                  thesisId: widget.thesisId,
-                                ),
+                          itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                            const PopupMenuItem<String>(
+                              value: 'detail_seminar',
+                              child: ListTile(
+                                leading: Icon(Icons.event),
+                                title: Text('Detail Seminar'),
                               ),
-                            );
-                          },
-                          child: const Text('Daftar Seminar'),
-                        ),
-                        const SizedBox(width: 10),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => DaftarSidang(
-                                thesisId: widget.thesisId,
-                              )), 
-                            );
-                          },
-                          child: const Text('Daftar Sidang'),
+                            ),
+                            const PopupMenuItem<String>(
+                              value: 'daftar_seminar',
+                              child: ListTile(
+                                leading: Icon(Icons.list),
+                                title: Text('Daftar Seminar'),
+                              ),
+                            ),
+                            const PopupMenuItem<String>(
+                              value: 'daftar_sidang',
+                              child: ListTile(
+                                leading: Icon(Icons.article),
+                                title: Text('Daftar Sidang'),
+                              ),
+                            ),
+                          ],
+                          child: ElevatedButton(
+                            onPressed: null,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                            ),
+                            child: const Text('Aksi Lainnya'),
+                          ),
                         ),
                       ],
                     ),
