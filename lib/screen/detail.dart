@@ -11,7 +11,7 @@ class Detail extends StatefulWidget {
   final String authToken;
   final String thesisId;
 
-  const Detail({Key? key, required this.thesisId, required this.authToken}) : super(key: key);
+  const Detail({super.key, required this.thesisId, required this.authToken});
 
   @override
   State<StatefulWidget> createState() => _DetailState();
