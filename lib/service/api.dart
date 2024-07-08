@@ -6,6 +6,7 @@ import 'package:sidang/model/profile.dart';
 import 'package:sidang/model/theses.dart';
 import 'package:sidang/model/seminar.dart';
 import 'package:sidang/service/shared_preferences.dart';
+import 'package:sidang/model/weather.dart';
 
 class ApiService {
   static const String baseUrl = 'https://backend-pmp.unand.dev';
@@ -195,6 +196,20 @@ class ApiService {
       return false;
     }
   }
+
+
+  static const String _apiKey = '661527c5365a4bf2bf3234429240707';
+  
+  Future<Weather> fetchWeather(String city) async {
+    final response = await http.get(Uri.parse('http://api.weatherapi.com/v1/current.json?key=$_apiKey&q=$city'));
+
+    if (response.statusCode == 200) {
+      return Weather.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to load weather data');
+    }
+  }
+
 
 }
 

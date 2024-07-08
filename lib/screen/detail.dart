@@ -79,9 +79,9 @@ class _DetailState extends State<Detail> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            thesis.status == 1 ? 'Bimbingan' : 'Gagal',
+                            thesis.status == 0 ? 'Gagal' : 'Bimbingan',
                             style: TextStyle(
-                              color: thesis.status == 1 ? Colors.green : Colors.red,
+                              color: thesis.status == 0 ? Colors.red : Colors.green,
                             ),
                           ),
                           const SizedBox(height: 16),
@@ -119,7 +119,7 @@ class _DetailState extends State<Detail> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Tanggal Mulai: ${DateFormat('dd MMMM yyyy').format(thesis.startAt)}', 
+                            'Tanggal Mulai: ${thesis.startAt != null ? DateFormat('dd MMMM yyyy').format(thesis.startAt!) : 'Unknown'}', 
                             style: const TextStyle(
                               color: Colors.black,
                               fontSize: 12,
